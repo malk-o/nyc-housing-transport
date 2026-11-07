@@ -35,7 +35,7 @@ def rq1(df, top=15):
         return _empty("No data for the selected filters")
     years = _usable_years(df)
     if len(years) < 2:
-        return _empty("Select at least two years to compare growth")
+        return _empty("Select at least two years to compare growth. When complete years are available, only years with all 12 months of data are compared.")
     y0, y1 = min(years), max(years)
 
     d = (df[df["year"].isin([y0, y1])].assign(zip=lambda t: t["zip"].astype(str))
