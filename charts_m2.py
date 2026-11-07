@@ -48,6 +48,6 @@ def rq4(df, top=15):
 
 
 CHARTS = [
-    ("M2-RQ3: Which boroughs have the highest share of crashes with pedestrian or cyclist casualties, and has it changed since 2022?", rq3),
-    ("M2-RQ4: Which ZIPs have the most injuries per crash?", rq4),
+    ("M2-RQ1: Which boroughs have the highest share of crashes with pedestrian or cyclist casualties, and has it changed since 2022?", rq3),
+    ("M2-RQ2: Which ZIPs have the most injuries per crash?", rq4),
 ]
