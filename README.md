@@ -4,7 +4,7 @@
 
 We ask whether the parts of New York with the most new construction also have more street-safety problems. We join two NYC Open Data tables at ZIP code x month and explore them in an interactive website.
 
-- **Live site:** `<paste the Render URL here>`
+- **Live site:** `https://malk0.pythonanywhere.com/`
 - **Notebook:** `notebook/` (EDA, cleaning, integration, research questions, prompt log)
 
 ## Datasets
