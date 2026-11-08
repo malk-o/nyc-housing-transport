@@ -101,8 +101,8 @@ def describe_r(r):
     a = abs(r)
     sign = "positive" if r >= 0 else "negative"
     if a < 0.1:
-        return "almost no relationship"
-    return f"a {'weak' if a < 0.3 else 'moderate' if a < 0.5 else 'strong'} {sign} relationship"
+        return "almost no relationship"    
+    return f"a {'weak' if a < 0.3 else 'moderate' if a < 0.7 else 'strong'} {sign} relationship"
 
 
 def story_stats(df):
