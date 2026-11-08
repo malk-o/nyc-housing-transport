@@ -3,4 +3,9 @@ plotly==5.24.1
 pandas==2.2.3
 numpy==1.26.4
 gunicorn==22.0.0
-
+matplotlib
+seaborn
+scikit-learn
+ipython
+ipykernel
+nbformat>=4.2.0
