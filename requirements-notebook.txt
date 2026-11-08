@@ -1,0 +1,6 @@
+matplotlib
+seaborn
+scikit-learn
+ipython
+ipykernel
+nbformat>=4.2.0
