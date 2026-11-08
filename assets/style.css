@@ -1,26 +1,290 @@
-:root{--ink:#17212b;--paper:#f2f5f8;--panel:#ffffff;--line:#d5dde5;
---housing:#1f6f8b;--transport:#d99100;--alert:#c8442f;}
-*{box-sizing:border-box}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:"Public Sans",system-ui,sans-serif;line-height:1.55}
-.hero{background:var(--ink);color:#fff;padding:44px 6vw 36px}
-.hero h1{margin:0 0 8px;font-size:clamp(1.9rem,4vw,3rem);font-weight:800;letter-spacing:-.02em;max-width:22ch}
-.hero p{margin:0;max-width:64ch;color:#c9d3dd}
-.story{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;padding:28px 6vw;background:#fff;border-bottom:1px solid var(--line)}
-.story h3{margin:0 0 6px;font-size:1rem}
-.story p{margin:0;font-size:.93rem;max-width:60ch}
-.controls{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);padding:14px 6vw;display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));align-items:end}
-.controls label{display:block;font-size:.8rem;font-weight:600;margin-bottom:4px}
-.controls input[type=text]{width:100%;height:38px;padding:0 10px;border:1px solid var(--line);border-radius:6px;font:inherit}
-.btn{height:38px;border:0;border-radius:6px;background:var(--housing);color:#fff;font:inherit;font-weight:700;cursor:pointer;padding:0 18px}
-.btn:hover{background:#17566c}.btn:focus-visible,input:focus-visible{outline:3px solid var(--transport);outline-offset:2px}
-.btn.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
-.btn.secondary:hover{background:#eef2f6}
-.status{padding:10px 6vw;font-size:.9rem;color:#42505e}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:18px;padding:8px 6vw 40px}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px 16px}
-.card h4{margin:0 0 6px;font-size:.95rem}
-.card.wide{grid-column:1/-1}
-.kpis{display:flex;gap:28px;flex-wrap:wrap;padding:14px 6vw 0}
-.kpi b{font-size:1.6rem;display:block}.kpi span{font-size:.82rem;color:#53606d}
-.footer{padding:24px 6vw;font-size:.85rem;color:#53606d}
-@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@import url("https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400..700;1,8..60,400..700&display=swap");
+
+/* ------------------------------------------------------------------
+   Tokens. Teal = housing, red = crashes (same as the charts), yellow = the one action.
+   ------------------------------------------------------------------ */
+:root {
+  --ink: #17212b;
+  --teal: #1f6f8b;
+  --red: #c8442f;
+  --hazard: #f2b705;
+  --paper: #f3f5f6;
+  --panel: #ffffff;
+  --line: #cfd6db;
+  --muted: #55626d;
+  --sans: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --page: 1180px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 5.5rem; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+a { color: var(--teal); text-underline-offset: 3px; }
+a:hover { color: var(--ink); }
+
+:focus-visible { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+.wrap { max-width: var(--page); margin: 0 auto; padding: 0 1.25rem; }
+
+/* ------------------------------------------------------------------
+   Placeholder-data warning (only rendered when data/merged_data.csv is missing)
+   ------------------------------------------------------------------ */
+.warning-banner {
+  background: var(--red);
+  color: #fff;
+  padding: 0.6rem 1.25rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ------------------------------------------------------------------
+   Hero: the question is the headline
+   ------------------------------------------------------------------ */
+.hero { background: var(--ink); color: #fff; padding: clamp(2.5rem, 7vw, 5rem) 0 0; }
+
+.hero h1 {
+  margin: 0;
+  max-width: 14ch;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-stretch: 68%;
+  font-size: clamp(3rem, 9vw, 6.5rem);
+  line-height: 0.96;
+  letter-spacing: -0.005em;
+}
+
+.hero-sub {
+  max-width: 60ch;
+  margin: 1.5rem 0 0;
+  font-family: var(--serif);
+  font-size: 1.2rem;
+  line-height: 1.55;
+  color: #d9e0e5;
+}
+
+.hero-links { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1.75rem 0 clamp(2rem, 5vw, 3.5rem); }
+
+.hero-links a {
+  color: #fff;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 0.55rem 1rem;
+  border: 2px solid #fff;
+  border-radius: 2px;
+}
+.hero-links a:hover { background: #fff; color: var(--ink); }
+
+/* the two domains side by side: housing, then crashes */
+.hero-rule { display: flex; height: 8px; }
+.hero-rule span { flex: 1; }
+.hero-rule .h { background: var(--teal); }
+.hero-rule .t { background: var(--red); }
+
+/* ------------------------------------------------------------------
+   Story: hanging headings, serif text
+   ------------------------------------------------------------------ */
+.story { padding: clamp(2.5rem, 6vw, 4.5rem) 0 1rem; }
+
+.story-block {
+  display: grid;
+  grid-template-columns: minmax(9rem, 1fr) minmax(0, 3.2fr);
+  gap: 1rem 2.5rem;
+  padding: 0 0 clamp(2rem, 4vw, 3rem);
+}
+
+.story-block h2 {
+  margin: 0;
+  font-family: var(--sans);
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  line-height: 1.1;
+}
+
+.story-text { max-width: 66ch; font-family: var(--serif); font-size: 1.125rem; line-height: 1.7; }
+.story-text p { margin: 0 0 1rem; }
+.story-text p:last-child { margin-bottom: 0; }
+.story-text strong { font-family: var(--sans); font-weight: 700; }
+
+/* ------------------------------------------------------------------
+   Explorer
+   ------------------------------------------------------------------ */
+.explorer-head { padding: 1rem 0 1.25rem; }
+.explorer-head h2 {
+  margin: 0 0 0.35rem;
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  line-height: 1.05;
+}
+.explorer-head p { margin: 0; max-width: 62ch; color: var(--muted); }
+
+.controls {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: var(--panel);
+  border-top: 4px solid var(--ink);
+  border-bottom: 1px solid var(--line);
+}
+
+.controls-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.9rem 1.1rem;
+  padding: 0.85rem 0;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+.field > label { font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+.field-borough { flex: 1 1 15rem; }
+.field-year { flex: 1 1 13rem; }
+.field-housing { flex: 1 1 11rem; }
+.field-transport { flex: 1 1 11rem; }
+.field-search { flex: 3 1 24rem; }
+
+#filter-fields { display: contents; }
+#search-field { display: contents; }
+
+.search-input {
+  width: 100%;
+  height: 38px;
+  padding: 0 0.75rem;
+  border: 1px solid #98a4ad;
+  border-radius: 4px;
+  font: inherit;
+  color: var(--ink);
+  background: #fff;
+}
+
+.mode { display: flex; gap: 0; }
+.mode label {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding: 0 0.9rem;
+  border: 1px solid var(--ink);
+  font-weight: 600;
+  cursor: pointer;
+  background: #fff;
+}
+.mode label:first-child { border-radius: 2px 0 0 2px; }
+.mode label:last-child { border-radius: 0 2px 2px 0; margin-left: -1px; }
+.mode label:has(input:checked) { background: var(--ink); color: #fff; }
+.mode input { position: absolute; opacity: 0; pointer-events: none; }
+.mode label:has(input:focus-visible) { outline: 3px solid var(--ink); outline-offset: 2px; }
+
+.go {
+  height: 38px;
+  padding: 0 1.5rem;
+  background: var(--hazard);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 800;
+  border: 2px solid var(--ink);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background-color 0.12s, color 0.12s;
+}
+.go:hover { background: var(--ink); color: var(--hazard); }
+
+/* ------------------------------------------------------------------
+   Report
+   ------------------------------------------------------------------ */
+.report { padding: 1.5rem 0 3rem; min-height: 24rem; }
+
+.applied { margin: 0 0 1rem; max-width: 80ch; color: var(--muted); }
+.applied strong { color: var(--ink); }
+.search-note { margin: 0 0 1rem; padding: 0.6rem 0.9rem; background: #fff7d6; border-left: 4px solid var(--hazard); max-width: 80ch; }
+
+.kpis { display: flex; flex-wrap: wrap; gap: 0.5rem 2.75rem; margin: 0 0 2rem; }
+.kpi-value {
+  display: block;
+  font-weight: 800;
+  font-stretch: 80%;
+  font-size: 2.25rem;
+  line-height: 1.05;
+  font-variant-numeric: tabular-nums;
+}
+.kpi-label { color: var(--muted); font-size: 0.9rem; }
+
+.group { margin: 0 0 2.5rem; }
+.group h3 {
+  margin: 0 0 0.9rem;
+  font-weight: 800;
+  font-stretch: 75%;
+  font-size: 1.5rem;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 520px), 1fr));
+  gap: 1.25rem;
+}
+
+/* A panel's top rule says which domain it speaks about */
+.panel {
+  min-width: 0;
+  background: var(--panel);
+  padding: 1rem 1rem 0.5rem;
+  border-top: 4px solid var(--ink);
+  box-shadow: 0 0 0 1px var(--line);
+}
+.panel.housing { border-top-color: var(--teal); }
+.panel.transport { border-top-color: var(--red); }
+.panel.both {
+  border-width: 4px 0 0 0;
+  border-style: solid;
+  border-image: linear-gradient(90deg, var(--teal) 50%, var(--red) 50%) 1;
+}
+.panel.wide { grid-column: 1 / -1; }
+
+.panel h4 {
+  margin: 0 0 0.5rem;
+  max-width: 70ch;
+  font-weight: 700;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+.empty {
+  padding: 2.5rem 1rem;
+  background: var(--panel);
+  box-shadow: 0 0 0 1px var(--line);
+  max-width: 60ch;
+}
+.empty strong { display: block; font-size: 1.1rem; margin-bottom: 0.25rem; }
+
+.footnote { margin: 0; max-width: 80ch; color: var(--muted); font-size: 0.9rem; }
+
+.site-footer { background: var(--ink); color: #d9e0e5; padding: 2rem 0 2.5rem; font-size: 0.95rem; }
+.site-footer a { color: #fff; }
+.site-footer p { margin: 0 0 0.5rem; max-width: 80ch; }
+
+/* ------------------------------------------------------------------
+   Small screens: the sticky bar would cover too much, so it scrolls with the page
+   ------------------------------------------------------------------ */
+@media (max-width: 760px) {
+  .controls { position: static; }
+  .story-block { grid-template-columns: 1fr; }
+  .hero h1 { max-width: none; }
+  .go { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+}
