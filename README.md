@@ -77,10 +77,10 @@ Other hosts work too: the included `Dockerfile` serves the app with gunicorn on 
 
 | Member | Work |
 |---|---|
-| Member 1 (housing data) | EDA and pre-integration cleaning of the DOB NOW filings; found that the published ZIP column does not match the building location and derived ZIP from coordinates; research questions 1-2, charts in `charts_m1.py` |
-| Member 2 (transport data) | EDA and pre-integration cleaning of the crash data, including ZIP recovery from coordinates and borough checks; research questions 3-4, charts in `charts_m2.py` |
-| Member 3 (integration) | Downloader, shared cleaning helpers, ZIP x month integration, post-integration cleaning and validation, `data_layer.py` (filters and search parser), `data/merged_data.csv`; PythonAnywhere deployment; research questions 5-6, charts in `charts_m3.py` |
-| Member 4 (website and story) | Website (`app.py`, `assets/style.css`): layout, filters, search mode, Generate report, story section; research questions 7-8 (`charts_m4.py`); this README, the GitHub repository and the submission email |
+| Member 1 (housing data)  Habiba Khaled(16009037)| EDA and pre-integration cleaning of the DOB NOW filings; found that the published ZIP column does not match the building location and derived ZIP from coordinates; research questions 1-2, charts in `charts_m1.py` |
+| Member 2 (transport data)  Ghada Haitham(16005525)| EDA and pre-integration cleaning of the crash data, including ZIP recovery from coordinates and borough checks; research questions 3-4, charts in `charts_m2.py` |
+| Member 3 (integration) Malk Okasha(16004476) | Downloader, shared cleaning helpers, ZIP x month integration, post-integration cleaning and validation, `data_layer.py` (filters and search parser), `data/merged_data.csv`; PythonAnywhere deployment; research questions 5-6, charts in `charts_m3.py` |
+| Member 4 (website and story) Sara Negm(16001076)| Website (`app.py`, `assets/style.css`): layout, filters, search mode, Generate report, story section; research questions 7-8 (`charts_m4.py`); |
 
 ## AI use
 
