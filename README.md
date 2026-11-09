@@ -5,7 +5,7 @@
 We ask whether the parts of New York with the most new construction also have more street-safety problems. We join two NYC Open Data tables at ZIP code x month and explore them in an interactive website.
 
 - **Live site:** `https://malk0.pythonanywhere.com/`
-- **Notebook:** `notebook/` (EDA, cleaning, integration, research questions, prompt log)
+- **Notebook:** `notebooks/NYC_Housing_Transport.ipynb` (EDA, cleaning, integration, research questions, prompt log)
 
 ## Datasets
 
@@ -27,9 +27,10 @@ charts_m2.py        Charts for research questions 3-4 (Member 2)
 charts_m3.py        Charts for research questions 5-6 (Member 3)
 charts_m4.py        Charts for research questions 7-8 (Member 4)
 data/merged_data.csv  Integrated ZIP x month table the site reads
-notebook/           Colab notebook
-requirements.txt    Python dependencies
-render.yaml         Render deployment settings
+notebooks/          Colab notebook (EDA, cleaning, integration, research questions, prompt log)
+requirements.txt    Python dependencies for the website
+requirements-notebook.txt  extra packages the notebook needs (scikit-learn, seaborn, ...)
+Dockerfile          container build for hosts such as Hugging Face Spaces (port 7860)
 ```
 
 `data/merged_data.csv` has one row per ZIP x month. The column list is in the docstring at the top of `data_layer.py`.
@@ -53,14 +54,24 @@ If `data/merged_data.csv` is missing, the site falls back to made-up placeholder
 4. **Charts:** lines, bars, heatmaps, a percentile scatter and a ZIP map. The last row combines both domains (hotspot scatter, lag correlation, seasonality heatmaps, map).
 5. **Story:** the numbers in the story section are computed from the loaded data, so they always match the charts.
 
-## Deploy on Render
+## Deployment
 
-1. Push this repository to GitHub (include `data/merged_data.csv`).
-2. On https://render.com choose **New > Web Service** and connect the repository.
-3. Settings (also stored in `render.yaml`): runtime Python, build command `pip install -r requirements.txt`, start command `gunicorn app:server --workers 1 --timeout 120`, plan Free.
-4. Deploy, open the URL, and test the dropdowns, search mode and **Generate report**.
+The live site runs on **PythonAnywhere** (https://malk0.pythonanywhere.com/). To deploy your own copy there:
 
-The free plan sleeps after about 15 minutes without visits, and the first request afterwards takes up to a minute. Open the site shortly before anyone grades it.
+1. Open a Bash console and clone the repository (it must include `data/merged_data.csv`).
+2. Create a virtualenv and install the dependencies: `mkvirtualenv nyc --python=python3.12` then `pip install -r requirements.txt`.
+3. On the **Web** tab add a new web app (manual configuration, same Python version), set the source directory and the virtualenv path.
+4. In the WSGI configuration file point to the Dash server object:
+
+   ```python
+   import sys
+   sys.path.insert(0, "/home/<username>/nyc-housing-transport")
+   from app import server as application
+   ```
+
+5. Press **Reload**, open the site and test the dropdowns, search mode and **Generate report**.
+
+Other hosts work too: the included `Dockerfile` serves the app with gunicorn on port 7860 (Hugging Face Spaces), and any Python host can use `gunicorn app:server --workers 1 --timeout 120`.
 
 ## Team contributions
 
@@ -68,8 +79,8 @@ The free plan sleeps after about 15 minutes without visits, and the first reques
 |---|---|
 | Member 1 (housing data) | EDA and pre-integration cleaning of the DOB NOW filings; found that the published ZIP column does not match the building location and derived ZIP from coordinates; research questions 1-2, charts in `charts_m1.py` |
 | Member 2 (transport data) | EDA and pre-integration cleaning of the crash data, including ZIP recovery from coordinates and borough checks; research questions 3-4, charts in `charts_m2.py` |
-| Member 3 (integration) | Downloader, shared cleaning helpers, ZIP x month integration, post-integration cleaning and validation, `data_layer.py` (filters and search parser), `data/merged_data.csv`; research questions 5-6, charts in `charts_m3.py` |
-| Member 4 (website and story) | Website (`app.py`, `assets/style.css`): layout, filters, search mode, Generate report, story section; research questions 7-8 (`charts_m4.py`); Render deployment, this README, the GitHub repository and the submission email |
+| Member 3 (integration) | Downloader, shared cleaning helpers, ZIP x month integration, post-integration cleaning and validation, `data_layer.py` (filters and search parser), `data/merged_data.csv`; PythonAnywhere deployment; research questions 5-6, charts in `charts_m3.py` |
+| Member 4 (website and story) | Website (`app.py`, `assets/style.css`): layout, filters, search mode, Generate report, story section; research questions 7-8 (`charts_m4.py`); this README, the GitHub repository and the submission email |
 
 ## AI use
 
